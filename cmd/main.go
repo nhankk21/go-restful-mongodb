@@ -5,6 +5,7 @@ import (
 	"go-restful/pkg/data"
 	"go-restful/pkg/handler"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -12,6 +13,14 @@ import (
 var BaseURI = "mongodb://localhost:27017"
 
 func main() {
+	BaseURI = os.Getenv("MONGODB_URI")
+	if BaseURI == "" {
+		BaseURI = "mongodb://localhost:27017"
+	}
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = ":8080"
+	}
 	data.ConnectDb(BaseURI)
 	fmt.Println("database oke")
 	defer data.CloseDb()
@@ -24,6 +33,6 @@ func main() {
 	r.HandleFunc("/api/todo/{id}", handler.UpdateTodo).Methods(http.MethodPut)
 	r.HandleFunc("/api/todo/{id}", handler.DeleteTodo).Methods(http.MethodDelete)
 
-	http.ListenAndServe(":8080", r)
+	http.ListenAndServe(port, r)
 
 }
