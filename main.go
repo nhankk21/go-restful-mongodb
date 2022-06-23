@@ -11,13 +11,14 @@ import (
 )
 
 var BaseURI = "mongodb://localhost:27017"
+var port = ":8080"
 
 func main() {
 	BaseURI = os.Getenv("MONGODB_URI")
 	if BaseURI == "" {
-		BaseURI = "mongodb://localhost:27017"
+		BaseURI = "mongodb+srv://nhankk21:MatKhau123@cluster0.tyitgqk.mongodb.net/?retryWrites=true&w=majority"
 	}
-	port := os.Getenv("PORT")
+	port = os.Getenv("PORT")
 	if port == "" {
 		port = ":8080"
 	}
@@ -27,12 +28,12 @@ func main() {
 
 	r := mux.NewRouter()
 
+	r.HandleFunc("/api/todo", handler.CreateTodo).Methods(http.MethodPost)
 	r.HandleFunc("/api/todo", handler.GetAllTodo).Methods(http.MethodGet)
 	r.HandleFunc("/api/todo/{id}", handler.GetTodoById).Methods(http.MethodGet)
-	r.HandleFunc("/api/todo", handler.CreateTodo).Methods(http.MethodPost)
 	r.HandleFunc("/api/todo/{id}", handler.UpdateTodo).Methods(http.MethodPut)
 	r.HandleFunc("/api/todo/{id}", handler.DeleteTodo).Methods(http.MethodDelete)
-
+	fmt.Println(port)
 	http.ListenAndServe(port, r)
 
 }

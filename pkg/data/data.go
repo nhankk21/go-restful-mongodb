@@ -31,7 +31,7 @@ func CloseDb() {
 func ConnectDb(uri string) {
 	var err error
 
-	ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	ctx, cancel = context.WithTimeout(context.Background(), 1000*time.Second)
 
 	client, err = mongo.Connect(ctx, options.Client().ApplyURI(uri))
 	if err != nil {
@@ -93,6 +93,7 @@ func CreateData(todo dto.Todo) (*mongo.InsertOneResult, error) {
 	collection := client.Database(dataBase).Collection(col)
 	id, err := collection.CountDocuments(ctx, bson.D{})
 	if err != nil {
+		fmt.Println("crashhhh")
 		return nil, err
 	}
 	result, err := collection.InsertOne(ctx, dto.Todo{

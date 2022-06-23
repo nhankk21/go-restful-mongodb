@@ -13,6 +13,7 @@ import (
 )
 
 func GetAllTodo(writer http.ResponseWriter, request *http.Request) {
+	fmt.Println("xyz")
 	result, err := data.GetAllData()
 	if err != nil {
 		fmt.Println(err)
@@ -44,10 +45,13 @@ func GetTodoById(writer http.ResponseWriter, request *http.Request) {
 
 func CreateTodo(writer http.ResponseWriter, request *http.Request) {
 	var newTodo dto.Todo
+	fmt.Println("abc")
 	if err := json.NewDecoder(request.Body).Decode(&newTodo); err != nil {
+		fmt.Println(newTodo)
 		responseWithJson(writer, http.StatusBadRequest, map[string]string{"message": "Invalid body"})
 		return
 	}
+
 	_, err := data.CreateData(newTodo)
 	if err != nil {
 		fmt.Println(err)
