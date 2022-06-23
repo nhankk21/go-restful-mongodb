@@ -19,10 +19,10 @@ func main() {
 	if BaseURI == "" {
 		BaseURI = "mongodb+srv://nhankk21:MatKhau123@cluster0.tyitgqk.mongodb.net/?retryWrites=true&w=majority"
 	}
-	port = os.Getenv("PORT")
-	if port == "" {
-		port = ":8080"
-	}
+	// port = os.Getenv("PORT")
+	// if port == "" {
+	// 	port = ":8080"
+	// }
 	data.ConnectDb(BaseURI)
 	fmt.Println("database oke")
 	defer data.CloseDb()
