@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-restful/pkg/data"
 	"go-restful/pkg/handler"
+	"log"
 	"net/http"
 	"os"
 
@@ -28,12 +29,18 @@ func main() {
 
 	r := mux.NewRouter()
 
+	r.HandleFunc("/", handler.CreateTodo).Methods(http.MethodGet)
+	r.HandleFunc("/favicon.ico", handler.CreateTodo).Methods(http.MethodGet)
+
 	r.HandleFunc("/api/todo", handler.CreateTodo).Methods(http.MethodPost)
 	r.HandleFunc("/api/todo", handler.GetAllTodo).Methods(http.MethodGet)
 	r.HandleFunc("/api/todo/{id}", handler.GetTodoById).Methods(http.MethodGet)
 	r.HandleFunc("/api/todo/{id}", handler.UpdateTodo).Methods(http.MethodPut)
 	r.HandleFunc("/api/todo/{id}", handler.DeleteTodo).Methods(http.MethodDelete)
 	fmt.Println(port)
-	http.ListenAndServe(port, r)
+	err := http.ListenAndServe(port, r)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
